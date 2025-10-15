@@ -1,11 +1,14 @@
-[gd_scene load_steps=7 format=3 uid="uid://coclh4q8t3p8f"]
+[gd_scene load_steps=10 format=3 uid="uid://coclh4q8t3p8f"]
 
 [ext_resource type="PackedScene" uid="uid://xqimcf20s2jp" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/right_fullglove_low.tscn" id="1_onrkg"]
 [ext_resource type="PackedScene" uid="uid://b4ysuy43poobf" path="res://addons/godot-xr-tools/functions/function_pickup.tscn" id="2_hqtel"]
 [ext_resource type="PackedScene" uid="uid://bq86r4yll8po" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/left_fullglove_low.tscn" id="2_i3pqv"]
 [ext_resource type="PackedScene" uid="uid://b6bk2pj8vbj28" path="res://addons/godot-xr-tools/functions/movement_turn.tscn" id="3_2hs0m"]
+[ext_resource type="PackedScene" uid="uid://c2q5phg8w08o" path="res://addons/godot-xr-tools/functions/movement_jump.tscn" id="4_dw050"]
 [ext_resource type="PackedScene" uid="uid://fiul51tsyoop" path="res://addons/godot-xr-tools/functions/function_teleport.tscn" id="4_hqtel"]
+[ext_resource type="Script" uid="uid://ci44nsgqarq4r" path="res://left_hand_controller.gd" id="5_b26j0"]
 [ext_resource type="PackedScene" uid="uid://diyu06cw06syv" path="res://addons/godot-xr-tools/player/player_body.tscn" id="5_sweqy"]
+[ext_resource type="PackedScene" uid="uid://bl2nuu3qhlb5k" path="res://addons/godot-xr-tools/functions/movement_direct.tscn" id="6_1jxqw"]
 
 [node name="XROrigin3D" type="XROrigin3D"]
 
@@ -22,8 +25,12 @@ tracker = &"right_hand"
 turn_mode = 2
 smooth_turn_speed = 3.0
 
+[node name="MovementJump" parent="RightHandController/RightHand" instance=ExtResource("4_dw050")]
+jump_button_action = "ax_button"
+
 [node name="LeftHandController" type="XRController3D" parent="."]
 tracker = &"left_hand"
+script = ExtResource("5_b26j0")
 
 [node name="LeftHand" parent="LeftHandController" instance=ExtResource("2_i3pqv")]
 
@@ -31,6 +38,13 @@ tracker = &"left_hand"
 
 [node name="FunctionTeleport" parent="LeftHandController/LeftHand" instance=ExtResource("4_hqtel")]
 player_radius = 0.25
+
+[node name="MovementDirect" parent="LeftHandController/LeftHand" instance=ExtResource("6_1jxqw")]
+strafe = true
+
+[node name="RayCast3D" type="RayCast3D" parent="LeftHandController"]
+target_position = Vector3(0, 0, -1)
+collide_with_areas = true
 
 [node name="PlayerBody" parent="." instance=ExtResource("5_sweqy")]
 player_calibrate_height = false

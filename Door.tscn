@@ -1,0 +1,78 @@
+[gd_scene load_steps=7 format=3 uid="uid://b0temm3kdy8mb"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_iu8q0"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_cuixy"]
+points = PackedVector3Array(-1, 0, -1, -1, 0, 1, 1, 0, -1, 1, 0, 1)
+
+[sub_resource type="Animation" id="Animation_jbk66"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_38qdo"]
+resource_name = "Door_down"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 1.6587534, 0), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_r6baa"]
+resource_name = "Door_up"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 1.6587534, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_idmte"]
+_data = {
+&"Door_down": SubResource("Animation_38qdo"),
+&"Door_up": SubResource("Animation_r6baa"),
+&"RESET": SubResource("Animation_jbk66")
+}
+
+[node name="StaticBody3D" type="StaticBody3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, -2.1855694e-08, -0.8, 0, 0.5, -3.4969112e-08, 0, 0.8115643, 0)
+mesh = SubResource("PlaneMesh_iu8q0")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, -2.1855694e-08, -0.8, 0, 0.5, -3.4969112e-08, 0, 0.8115643, 0)
+shape = SubResource("ConvexPolygonShape3D_cuixy")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_idmte")
+}
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="tree_entered" from="." to="." method="_on_tree_entered"]
